@@ -1,0 +1,33 @@
+<header class="site-header">
+  <div class="bar container">
+    <a class="brand" routerLink="/" (click)="closeMenu()">Park Hotel Panorama</a>
+
+    <button
+      class="menu-toggle"
+      type="button"
+      [class.is-open]="menuOpen()"
+      (click)="toggleMenu()"
+      aria-label="Toggle navigation"
+    >
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
+    <nav [class.is-open]="menuOpen()">
+      <a routerLink="/rooms" routerLinkActive="active" (click)="closeMenu()">Rooms</a>
+      <a routerLink="/restaurant" routerLinkActive="active" (click)="closeMenu()">Restaurant</a>
+      <a routerLink="/gallery" routerLinkActive="active" (click)="closeMenu()">Gallery</a>
+      <a routerLink="/services" routerLinkActive="active" (click)="closeMenu()">Services</a>
+      <a routerLink="/location" routerLinkActive="active" (click)="closeMenu()">Location</a>
+      <a routerLink="/contact" routerLinkActive="active" (click)="closeMenu()">Contact</a>
+      <a
+        class="book-now btn btn-accent"
+        routerLink="/booking"
+        routerLinkActive="active"
+        (click)="closeMenu()"
+        >Book Now</a
+      >
+    </nav>
+  </div>
+</header>

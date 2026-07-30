@@ -1,0 +1,20 @@
+<app-page-hero title="Gallery" subtitle="Photos of the hotel and surroundings." />
+
+<div class="container gallery-grid">
+  @for (photo of photos; track photo.src; let i = $index) {
+    <button type="button" class="gallery-item" (click)="open(i)">
+      <img [src]="photo.src" [alt]="photo.alt" loading="lazy" />
+    </button>
+  }
+</div>
+
+@if (activeIndex() !== null) {
+  <div class="lightbox" (click)="close()">
+    <button type="button" class="lightbox-close" (click)="close()" aria-label="Close">&times;</button>
+    <img
+      [src]="photos[activeIndex()!].src"
+      [alt]="photos[activeIndex()!].alt"
+      (click)="$event.stopPropagation()"
+    />
+  </div>
+}

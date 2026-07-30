@@ -1,0 +1,16 @@
+<section class="hero">
+  <div class="container hero-inner">
+    <h1>Park Hotel Panorama</h1>
+    <p>The best way to experience Bulgaria &mdash; Tryavna, Balkan Mountains.</p>
+    <a class="btn btn-accent" routerLink="/booking">Book Now</a>
+  </div>
+</section>
+
+<section class="highlights container">
+  @for (item of highlights; track item.title) {
+    <a class="highlight-card" [routerLink]="item.link">
+      <h3>{{ item.title }}</h3>
+      <p>{{ item.description }}</p>
+    </a>
+  }
+</section>
