@@ -3,6 +3,22 @@
   subtitle="Cozy, well-appointed rooms overlooking the Balkan Mountains."
 />
 
-<div class="page-content">
-  <p>Our room listing and online booking are coming soon. In the meantime, call us at +359 897 820 065 to check availability.</p>
+<div class="container rooms-grid">
+  @for (room of rooms; track room.name) {
+    <article class="room-card">
+      <div class="room-photo">
+        <img [src]="room.image" [alt]="room.name" loading="lazy" (error)="onImageError($event)" />
+      </div>
+      <div class="room-body">
+        <h3>{{ room.name }}</h3>
+        <p class="room-meta">{{ room.sizeSqm }} m&sup2; &middot; Max. {{ room.maxGuests }}</p>
+        <ul class="amenities">
+          @for (amenity of room.amenities; track amenity) {
+            <li>{{ amenity }}</li>
+          }
+        </ul>
+        <a class="btn btn-accent" routerLink="/booking">Book Now</a>
+      </div>
+    </article>
+  }
 </div>
