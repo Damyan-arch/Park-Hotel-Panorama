@@ -44,7 +44,7 @@ older Prisma tutorials/docs and is easy to miss if you're used to earlier Prisma
 npm install                            # installs both workspaces (frontend + backend)
 cd backend && npx prisma migrate deploy   # applies the already-written migrations
 cd ..
-npm run dev                            # runs Angular (http://localhost:4201) and Nest (http://localhost:3000) together
+npm run dev                            # runs Angular (http://localhost:4201) and Nest (http://localhost:3001) together
 ```
 
 Note: use `npx prisma migrate deploy`, not `migrate dev` — the `park_hotel` role isn't a
@@ -63,7 +63,7 @@ Other useful commands:
 - `npm run dev:frontend` / `npm run dev:backend` — run just one side
 - `npm run db:up` / `npm run db:down` — only relevant if you switch to the Docker Postgres path
 - `npx prisma studio` (from `backend/`) — browse the local database in a web GUI
-- Swagger API docs: `http://localhost:3000/api` once the backend is running
+- Swagger API docs: `http://localhost:3001/api` once the backend is running
 
 ## Project layout
 
