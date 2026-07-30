@@ -6,6 +6,17 @@
   </div>
 </section>
 
+<section class="about-us container">
+  <h2>About Us</h2>
+  <p>
+    Our charming hotel offers a harmonious blend of comfort and elegance. Guests are welcomed
+    into a serene atmosphere where cozy, well-appointed rooms meet high-end amenities. The
+    hotel's exquisite design reflects the charm of the region, providing an ideal retreat for
+    those seeking both relaxation and sophistication. With its attentive service and attention to
+    detail, every stay promises a memorable experience in this enchanting corner of Bulgaria.
+  </p>
+</section>
+
 <section class="highlights container">
   @for (item of highlights; track item.title) {
     <a class="highlight-card" [routerLink]="item.link">
@@ -13,4 +24,27 @@
       <p>{{ item.description }}</p>
     </a>
   }
+</section>
+
+<section class="things-to-do">
+  <div class="container things-intro">
+    <h2>Things To Do</h2>
+    <p>
+      The hotel is nestled in the heart of Balkan Mountain &mdash; an area full of activities to
+      suit all interests. Guests can explore the charming local villages and wineries, enjoy the
+      nearby lake, hike and bike on trails that wind through picturesque landscapes.
+      Additionally, the local markets offer a delightful experience, where visitors can browse
+      and purchase fresh produce and artisanal goods.
+    </p>
+  </div>
+
+  <div class="things-grid">
+    @for (item of thingsToDo; track item.title) {
+      <div class="thing-card">
+        <span class="material-symbols-outlined thing-icon">{{ item.icon }}</span>
+        <h3>{{ item.title }}</h3>
+        <p>{{ item.description }}</p>
+      </div>
+    }
+  </div>
 </section>

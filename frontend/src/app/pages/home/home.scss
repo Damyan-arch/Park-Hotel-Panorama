@@ -65,3 +65,77 @@
     grid-template-columns: 1fr;
   }
 }
+
+.about-us {
+  text-align: center;
+  padding: 4rem 1.5rem 1rem;
+
+  p {
+    max-width: 720px;
+    margin: 0 auto;
+  }
+}
+
+.things-to-do {
+  background: var(--color-surface);
+  border-top: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+  padding: 4rem 1.5rem;
+  text-align: center;
+}
+
+.things-intro p {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.things-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1.5rem;
+  margin-top: 2.5rem;
+  padding: 0 2rem;
+}
+
+.thing-card {
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  padding: 1.75rem 1.5rem;
+  text-align: center;
+
+  h3 {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    margin: 0;
+    font-size: 0.9rem;
+  }
+}
+
+.thing-icon {
+  display: block;
+  font-size: 2.25rem;
+  color: var(--color-accent);
+  margin: 0 auto 0.75rem;
+}
+
+@media (max-width: 1100px) {
+  .things-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 900px) {
+  .things-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 560px) {
+  .things-grid {
+    grid-template-columns: 1fr;
+  }
+}
