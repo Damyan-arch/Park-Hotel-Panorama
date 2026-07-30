@@ -1,0 +1,31 @@
+.page-hero {
+  background: var(--color-primary-dark);
+  color: rgba(255, 255, 255, 0.9);
+  padding: 4.5rem 0;
+  text-align: center;
+
+  h1 {
+    color: #fff;
+    font-size: 2.5rem;
+    position: relative;
+    display: inline-block;
+    padding-bottom: 0.6rem;
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 56px;
+      height: 3px;
+      background: var(--color-accent);
+    }
+  }
+
+  p {
+    margin: 1rem auto 0;
+    max-width: 560px;
+    color: rgba(255, 255, 255, 0.75);
+  }
+}

@@ -1,0 +1,34 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: park-hotel-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: park_hotel
+      POSTGRES_PASSWORD: park_hotel_dev_password
+      POSTGRES_DB: park_hotel
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U park_hotel -d park_hotel"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: park-hotel-pgadmin
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@parkhotelpanorama.local
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "5050:80"
+    depends_on:
+      - postgres
+    profiles: ["tools"]
+
+volumes:
+  postgres_data:
