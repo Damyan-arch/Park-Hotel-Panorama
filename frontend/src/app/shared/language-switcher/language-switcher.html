@@ -1,0 +1,30 @@
+<div class="language-switcher" [class.is-open]="isOpen()">
+  <button
+    type="button"
+    class="lang-trigger"
+    [attr.aria-label]="lang.t().nav.changeLanguage"
+    (click)="toggle()"
+  >
+    <span class="lang-flag">{{ currentFlag() }}</span>
+    <span class="lang-code">{{ lang.locale() }}</span>
+    @if (lang.isTranslating()) {
+      <span class="lang-spinner" aria-hidden="true"></span>
+    }
+  </button>
+
+  @if (isOpen()) {
+    <ul class="lang-options" role="listbox">
+      @for (option of lang.options; track option.code) {
+        <li
+          role="option"
+          class="lang-option"
+          [class.is-selected]="option.code === lang.locale()"
+          (click)="select(option.code)"
+        >
+          <span class="lang-flag">{{ option.flag }}</span>
+          {{ option.nativeLabel }}
+        </li>
+      }
+    </ul>
+  }
+</div>

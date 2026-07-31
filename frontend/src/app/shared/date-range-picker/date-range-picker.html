@@ -1,28 +1,38 @@
 <div class="date-range-picker">
   <div class="range-labels">
     <div class="range-label">
-      <span>Check-in</span>
-      <strong>{{ checkIn() || 'Select a date' }}</strong>
+      <span>{{ lang.t().datePicker.checkIn }}</span>
+      <strong>{{ checkIn() || lang.t().datePicker.selectDate }}</strong>
     </div>
     <div class="range-label">
-      <span>Check-out</span>
-      <strong>{{ checkOut() || 'Select a date' }}</strong>
+      <span>{{ lang.t().datePicker.checkOut }}</span>
+      <strong>{{ checkOut() || lang.t().datePicker.selectDate }}</strong>
     </div>
   </div>
 
   <div class="date-picker-panel">
     <div class="date-picker-header">
-      <button type="button" class="nav-btn" (click)="prevMonth()" aria-label="Previous month">
+      <button
+        type="button"
+        class="nav-btn"
+        (click)="prevMonth()"
+        [attr.aria-label]="lang.t().datePicker.prevMonth"
+      >
         &lsaquo;
       </button>
       <span class="month-label">{{ monthLabel() }}</span>
-      <button type="button" class="nav-btn" (click)="nextMonth()" aria-label="Next month">
+      <button
+        type="button"
+        class="nav-btn"
+        (click)="nextMonth()"
+        [attr.aria-label]="lang.t().datePicker.nextMonth"
+      >
         &rsaquo;
       </button>
     </div>
 
     <div class="weekday-row">
-      @for (name of weekdayNames; track name) {
+      @for (name of weekdayNames(); track name) {
         <span class="weekday">{{ name }}</span>
       }
     </div>
@@ -50,10 +60,18 @@
     }
 
     <div class="legend">
-      <span class="legend-item"><span class="swatch swatch-available"></span>Available</span>
-      <span class="legend-item"><span class="swatch swatch-past"></span>Unavailable</span>
-      <span class="legend-item"><span class="swatch swatch-range"></span>In range</span>
-      <span class="legend-item"><span class="swatch swatch-selected"></span>Selected</span>
+      <span class="legend-item"
+        ><span class="swatch swatch-available"></span>{{ lang.t().datePicker.legend.available }}</span
+      >
+      <span class="legend-item"
+        ><span class="swatch swatch-past"></span>{{ lang.t().datePicker.legend.unavailable }}</span
+      >
+      <span class="legend-item"
+        ><span class="swatch swatch-range"></span>{{ lang.t().datePicker.legend.inRange }}</span
+      >
+      <span class="legend-item"
+        ><span class="swatch swatch-selected"></span>{{ lang.t().datePicker.legend.selected }}</span
+      >
     </div>
   </div>
 </div>

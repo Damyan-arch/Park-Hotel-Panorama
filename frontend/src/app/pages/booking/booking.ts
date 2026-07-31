@@ -5,6 +5,7 @@ import { PageHero } from '../../shared/page-hero/page-hero';
 import { DateRangePicker } from '../../shared/date-range-picker/date-range-picker';
 import { Select } from '../../shared/select/select';
 import { environment } from '../../../environments/environment';
+import { LanguageService } from '../../i18n/language.service';
 
 interface Room {
   id: string;
@@ -25,6 +26,8 @@ function toLocalIso(date: Date): string {
   styleUrl: './booking.scss',
 })
 export class Booking {
+  protected readonly lang = inject(LanguageService);
+
   private readonly http = inject(HttpClient);
   private readonly fb = new FormBuilder();
 
@@ -84,7 +87,7 @@ export class Booking {
   protected confirmBooking(): void {
     const room = this.availableRooms().find((r) => r.name === this.form.controls.room.value);
     if (!room) {
-      this.submitError.set('That room is no longer available. Please pick another one.');
+      this.submitError.set(this.lang.t().booking.errors.roomUnavailable);
       this.showConfirm.set(false);
       return;
     }
@@ -112,7 +115,7 @@ export class Booking {
           this.submitError.set(
             Array.isArray(message)
               ? message.join(' ')
-              : (message ?? 'Something went wrong sending your request. Please try again.'),
+              : (message ?? this.lang.t().booking.errors.generic),
           );
         },
       });
