@@ -1,9 +1,137 @@
-<app-page-hero title="Book Your Stay" subtitle="Online reservations are launching soon." />
+<app-page-hero title="Book Your Stay" subtitle="Tell us your dates and we'll take it from there." />
 
-<div class="page-content">
-  <p>
-    We're building online booking and secure card payment right now. Until it's live, please
-    call us to reserve your room.
-  </p>
-  <p><a class="btn btn-accent" href="tel:+359897820065">Call +359 897 820 065</a></p>
+<div class="container booking-content">
+  @if (submitted()) {
+    <div class="booking-success">
+      <h2>Thank you!</h2>
+      <p>
+        We've received your request and will contact you shortly to confirm your reservation.
+        For anything urgent, feel free to call us at
+        <a href="tel:+359897820065">+359 897 820 065</a>.
+      </p>
+    </div>
+  } @else {
+    @if (submitError()) {
+      <p class="submit-error">{{ submitError() }}</p>
+    }
+
+    <form class="booking-form" [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="booking-grid">
+        <div class="booking-dates">
+          <div class="form-field">
+            <app-date-range-picker
+              [minIso]="todayIso"
+              [checkIn]="form.controls.checkIn.value"
+              [checkOut]="form.controls.checkOut.value"
+              (checkInChange)="onCheckInSelected($event)"
+              (checkOutChange)="onCheckOutSelected($event)"
+            />
+            @if (form.controls.checkIn.touched && form.controls.checkIn.invalid) {
+              <span class="field-error">Please select a check-in date.</span>
+            }
+            @if (form.controls.checkOut.touched && form.controls.checkOut.invalid) {
+              <span class="field-error">Please select a check-out date.</span>
+            }
+          </div>
+        </div>
+
+        <div class="booking-details">
+          <div class="form-field">
+            <label for="room">Room</label>
+            <app-select
+              [options]="roomNames()"
+              [value]="form.controls.room.value"
+              placeholder="Select a room"
+              (valueChange)="onRoomSelected($event)"
+            />
+            @if (form.controls.room.invalid && form.controls.room.touched) {
+              <span class="field-error">Please select a room.</span>
+            }
+          </div>
+
+          <hr class="form-divider" />
+
+          <div class="form-field">
+            <label for="name">Full name</label>
+            <input id="name" type="text" formControlName="name" autocomplete="name" />
+            @if (form.controls.name.invalid && form.controls.name.touched) {
+              <span class="field-error">Please enter your name.</span>
+            }
+          </div>
+
+          <div class="form-row">
+            <div class="form-field">
+              <label for="email">Email</label>
+              <input id="email" type="email" formControlName="email" autocomplete="email" />
+              @if (form.controls.email.invalid && form.controls.email.touched) {
+                <span class="field-error">Please enter a valid email.</span>
+              }
+            </div>
+
+            <div class="form-field">
+              <label for="phone">Phone</label>
+              <input id="phone" type="tel" formControlName="phone" autocomplete="tel" />
+              @if (form.controls.phone.invalid && form.controls.phone.touched) {
+                <span class="field-error">Please enter your phone number.</span>
+              }
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-accent">Request to Book</button>
+        </div>
+      </div>
+    </form>
+  }
 </div>
+
+@if (showConfirm()) {
+  <div class="modal-overlay" (click)="closeConfirm()">
+    <div class="modal-card" (click)="$event.stopPropagation()">
+      <h2>Confirm Your Request</h2>
+      <p class="modal-intro">Please double-check your details before sending.</p>
+
+      <dl class="summary-list">
+        <div class="summary-row">
+          <dt>Check-in</dt>
+          <dd>{{ form.controls.checkIn.value }}</dd>
+        </div>
+        <div class="summary-row">
+          <dt>Check-out</dt>
+          <dd>{{ form.controls.checkOut.value }}</dd>
+        </div>
+        <div class="summary-row">
+          <dt>Room</dt>
+          <dd>{{ form.controls.room.value }}</dd>
+        </div>
+        <div class="summary-row">
+          <dt>Name</dt>
+          <dd>{{ form.controls.name.value }}</dd>
+        </div>
+        <div class="summary-row">
+          <dt>Email</dt>
+          <dd>{{ form.controls.email.value }}</dd>
+        </div>
+        <div class="summary-row">
+          <dt>Phone</dt>
+          <dd>{{ form.controls.phone.value }}</dd>
+        </div>
+      </dl>
+
+      <div class="modal-actions">
+        <button type="button" class="btn btn-outline-dark" (click)="closeConfirm()">Edit</button>
+        <button type="button" class="btn btn-accent" (click)="confirmBooking()">
+          Confirm Request
+        </button>
+      </div>
+    </div>
+  </div>
+}
+
+@if (submitting()) {
+  <div class="modal-overlay">
+    <div class="loading-card">
+      <span class="spinner"></span>
+      <p>Sending your request&hellip;</p>
+    </div>
+  </div>
+}
