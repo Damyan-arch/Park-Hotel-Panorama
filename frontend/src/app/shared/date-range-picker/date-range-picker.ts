@@ -5,6 +5,7 @@ interface CalendarDay {
   iso: string;
   day: number;
   inCurrentMonth: boolean;
+  isOutside: boolean;
   isPast: boolean;
   isToday: boolean;
   isRangeStart: boolean;
@@ -38,6 +39,7 @@ export class DateRangePicker {
   readonly minIso = input<string | null>(null);
   readonly checkIn = input<string>('');
   readonly checkOut = input<string>('');
+  readonly hasError = input<boolean>(false);
   readonly checkInChange = output<string>();
   readonly checkOutChange = output<string>();
 
@@ -49,6 +51,13 @@ export class DateRangePicker {
   protected readonly viewMonth = signal(this.initialDate.getMonth());
 
   protected readonly weekdayNames = computed(() => this.lang.t().datePicker.weekdays);
+
+  protected readonly checkInLabel = computed(
+    () => this.checkIn() || this.lang.t().datePicker.selectDate,
+  );
+  protected readonly checkOutLabel = computed(
+    () => this.checkOut() || this.lang.t().datePicker.selectDate,
+  );
 
   protected readonly monthLabel = computed(
     () => `${this.lang.t().datePicker.months[this.viewMonth()]} ${this.viewYear()}`,
@@ -74,10 +83,12 @@ export class DateRangePicker {
         gridStart.getDate() + i,
       );
       const iso = toIso(date);
+      const inCurrentMonth = date.getMonth() === month;
       days.push({
         iso,
         day: date.getDate(),
-        inCurrentMonth: date.getMonth() === month,
+        inCurrentMonth,
+        isOutside: !inCurrentMonth,
         isPast: iso < minIso,
         isToday: iso === this.today,
         isRangeStart: iso === checkIn,

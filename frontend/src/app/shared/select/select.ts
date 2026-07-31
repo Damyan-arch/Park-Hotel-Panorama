@@ -1,4 +1,13 @@
-import { Component, ElementRef, HostListener, inject, input, output, signal } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  HostListener,
+  computed,
+  inject,
+  input,
+  output,
+  signal,
+} from '@angular/core';
 
 @Component({
   selector: 'app-select',
@@ -10,14 +19,21 @@ export class Select {
   readonly options = input<string[]>([]);
   readonly value = input<string>('');
   readonly placeholder = input<string>('Select an option');
+  readonly hasError = input<boolean>(false);
   readonly valueChange = output<string>();
 
   protected readonly isOpen = signal(false);
+  protected readonly isPlaceholder = computed(() => !this.value());
+  protected readonly displayValue = computed(() => this.value() || this.placeholder());
 
   private readonly elementRef = inject(ElementRef<HTMLElement>);
 
   protected toggle(): void {
     this.isOpen.update((open) => !open);
+  }
+
+  protected isSelected(option: string): boolean {
+    return option === this.value();
   }
 
   protected selectOption(option: string): void {

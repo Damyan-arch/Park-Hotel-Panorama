@@ -54,12 +54,19 @@
     outline: 2px solid var(--color-accent);
     outline-offset: 1px;
   }
+
+  input.has-error {
+    border-color: #e3a89c;
+    background: #fbeae7;
+  }
 }
 
 .field-error {
-  color: #b3402f;
-  font-size: 0.8rem;
-  margin-top: 0.35rem;
+  display: block;
+  color: #8a2e1f;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-top: 0.4rem;
 }
 
 .form-divider {

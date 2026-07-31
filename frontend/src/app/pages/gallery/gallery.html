@@ -8,7 +8,7 @@
   }
 </div>
 
-@if (activeIndex() !== null) {
+@if (activePhoto(); as photo) {
   <div class="lightbox" (click)="close()">
     <button
       type="button"
@@ -18,10 +18,6 @@
     >
       &times;
     </button>
-    <img
-      [src]="photos()[activeIndex()!].src"
-      [alt]="photos()[activeIndex()!].alt"
-      (click)="$event.stopPropagation()"
-    />
+    <img [src]="photo.src" [alt]="photo.alt" (click)="$event.stopPropagation()" />
   </div>
 }

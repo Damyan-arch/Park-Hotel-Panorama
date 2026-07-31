@@ -25,6 +25,11 @@ export class Gallery {
 
   protected readonly activeIndex = signal<number | null>(null);
 
+  protected readonly activePhoto = computed(() => {
+    const index = this.activeIndex();
+    return index === null ? null : this.photos()[index];
+  });
+
   open(index: number): void {
     this.activeIndex.set(index);
   }

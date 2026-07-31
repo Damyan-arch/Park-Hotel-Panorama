@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { LanguageService } from '../../i18n/language.service';
+import { ROUTE_PATHS } from '../../route-paths';
 
 @Component({
   selector: 'app-footer',
@@ -11,4 +12,5 @@ import { LanguageService } from '../../i18n/language.service';
 export class Footer {
   protected readonly lang = inject(LanguageService);
   protected readonly currentYear = new Date().getFullYear();
+  protected readonly routes = ROUTE_PATHS;
 }

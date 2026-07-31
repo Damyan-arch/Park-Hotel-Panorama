@@ -22,6 +22,10 @@ export class LanguageSwitcher {
     this.isOpen.update((open) => !open);
   }
 
+  protected isSelected(locale: Locale): boolean {
+    return locale === this.lang.locale();
+  }
+
   protected select(locale: Locale): void {
     this.lang.setLocale(locale);
     this.isOpen.set(false);

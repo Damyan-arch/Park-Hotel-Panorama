@@ -1,6 +1,6 @@
 <header class="site-header">
   <div class="bar container">
-    <a class="brand" routerLink="/" (click)="closeMenu()">
+    <a class="brand" [routerLink]="routes.home" (click)="closeMenu()">
       <img class="brand-mark" src="images/brand/logo-mark.png" alt="" />
       Park Hotel Panorama
     </a>
@@ -18,24 +18,24 @@
     </button>
 
     <nav [class.is-open]="menuOpen()">
-      <a routerLink="/rooms" routerLinkActive="active" (click)="closeMenu()">{{
+      <a [routerLink]="routes.rooms" routerLinkActive="active" (click)="closeMenu()">{{
         lang.t().nav.rooms
       }}</a>
-      <a routerLink="/restaurant" routerLinkActive="active" (click)="closeMenu()">{{
+      <a [routerLink]="routes.restaurant" routerLinkActive="active" (click)="closeMenu()">{{
         lang.t().nav.restaurant
       }}</a>
-      <a routerLink="/gallery" routerLinkActive="active" (click)="closeMenu()">{{
+      <a [routerLink]="routes.gallery" routerLinkActive="active" (click)="closeMenu()">{{
         lang.t().nav.gallery
       }}</a>
-      <a routerLink="/services" routerLinkActive="active" (click)="closeMenu()">{{
+      <a [routerLink]="routes.services" routerLinkActive="active" (click)="closeMenu()">{{
         lang.t().nav.services
       }}</a>
-      <a routerLink="/location" routerLinkActive="active" (click)="closeMenu()">{{
+      <a [routerLink]="routes.location" routerLinkActive="active" (click)="closeMenu()">{{
         lang.t().nav.location
       }}</a>
       <a
         class="book-now btn btn-accent"
-        routerLink="/booking"
+        [routerLink]="routes.booking"
         routerLinkActive="active"
         (click)="closeMenu()"
         >{{ lang.t().nav.bookNow }}</a

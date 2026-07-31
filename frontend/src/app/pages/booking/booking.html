@@ -17,60 +17,80 @@
     <form class="booking-form" [formGroup]="form" (ngSubmit)="onSubmit()">
       <div class="booking-grid">
         <div class="booking-dates">
-          <div class="form-field">
+          <div class="form-field" data-field="checkIn">
             <app-date-range-picker
               [minIso]="todayIso"
               [checkIn]="form.controls.checkIn.value"
               [checkOut]="form.controls.checkOut.value"
+              [hasError]="checkInHasError() || checkOutHasError()"
               (checkInChange)="onCheckInSelected($event)"
               (checkOutChange)="onCheckOutSelected($event)"
             />
-            @if (form.controls.checkIn.touched && form.controls.checkIn.invalid) {
+            @if (checkInHasError()) {
               <span class="field-error">{{ lang.t().booking.errors.checkIn }}</span>
             }
-            @if (form.controls.checkOut.touched && form.controls.checkOut.invalid) {
+            @if (checkOutHasError()) {
               <span class="field-error">{{ lang.t().booking.errors.checkOut }}</span>
             }
           </div>
         </div>
 
         <div class="booking-details">
-          <div class="form-field">
+          <div class="form-field" data-field="room">
             <label for="room">{{ lang.t().booking.labels.room }}</label>
             <app-select
               [options]="roomNames()"
               [value]="form.controls.room.value"
               [placeholder]="lang.t().booking.labels.roomPlaceholder"
+              [hasError]="roomHasError()"
               (valueChange)="onRoomSelected($event)"
             />
-            @if (form.controls.room.invalid && form.controls.room.touched) {
+            @if (roomHasError()) {
               <span class="field-error">{{ lang.t().booking.errors.room }}</span>
             }
           </div>
 
           <hr class="form-divider" />
 
-          <div class="form-field">
+          <div class="form-field" data-field="name">
             <label for="name">{{ lang.t().booking.labels.fullName }}</label>
-            <input id="name" type="text" formControlName="name" autocomplete="name" />
-            @if (form.controls.name.invalid && form.controls.name.touched) {
+            <input
+              id="name"
+              type="text"
+              formControlName="name"
+              autocomplete="name"
+              [class.has-error]="nameHasError()"
+            />
+            @if (nameHasError()) {
               <span class="field-error">{{ lang.t().booking.errors.name }}</span>
             }
           </div>
 
           <div class="form-row">
-            <div class="form-field">
+            <div class="form-field" data-field="email">
               <label for="email">{{ lang.t().booking.labels.email }}</label>
-              <input id="email" type="email" formControlName="email" autocomplete="email" />
-              @if (form.controls.email.invalid && form.controls.email.touched) {
+              <input
+                id="email"
+                type="email"
+                formControlName="email"
+                autocomplete="email"
+                [class.has-error]="emailHasError()"
+              />
+              @if (emailHasError()) {
                 <span class="field-error">{{ lang.t().booking.errors.email }}</span>
               }
             </div>
 
-            <div class="form-field">
+            <div class="form-field" data-field="phone">
               <label for="phone">{{ lang.t().booking.labels.phone }}</label>
-              <input id="phone" type="tel" formControlName="phone" autocomplete="tel" />
-              @if (form.controls.phone.invalid && form.controls.phone.touched) {
+              <input
+                id="phone"
+                type="tel"
+                formControlName="phone"
+                autocomplete="tel"
+                [class.has-error]="phoneHasError()"
+              />
+              @if (phoneHasError()) {
                 <span class="field-error">{{ lang.t().booking.errors.phone }}</span>
               }
             </div>

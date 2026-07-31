@@ -1,6 +1,7 @@
 import { Component, computed, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { LanguageService } from '../../i18n/language.service';
+import { ROUTE_PATHS } from '../../route-paths';
 
 @Component({
   selector: 'app-home',
@@ -10,14 +11,15 @@ import { LanguageService } from '../../i18n/language.service';
 })
 export class Home {
   protected readonly lang = inject(LanguageService);
+  protected readonly routes = ROUTE_PATHS;
 
   protected readonly highlights = computed(() => {
     const copy = this.lang.t().home.highlights;
     return [
-      { ...copy.rooms, link: '/rooms' },
-      { ...copy.restaurant, link: '/restaurant' },
-      { ...copy.poolSpa, link: '/services' },
-      { ...copy.location, link: '/location' },
+      { ...copy.rooms, link: ROUTE_PATHS.rooms },
+      { ...copy.restaurant, link: ROUTE_PATHS.restaurant },
+      { ...copy.poolSpa, link: ROUTE_PATHS.services },
+      { ...copy.location, link: ROUTE_PATHS.location },
     ];
   });
 

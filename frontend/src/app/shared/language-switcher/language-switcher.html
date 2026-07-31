@@ -18,7 +18,7 @@
         <li
           role="option"
           class="lang-option"
-          [class.is-selected]="option.code === lang.locale()"
+          [class.is-selected]="isSelected(option.code)"
           (click)="select(option.code)"
         >
           <img class="lang-flag" [src]="option.flagUrl" alt="" />

@@ -4,9 +4,6 @@ export interface LocaleOption {
   code: Locale;
   label: string;
   nativeLabel: string;
-  // Real SVG flags instead of emoji — Windows' default font renders flag
-  // emoji as plain two-letter codes (no picture), so emoji flags disappear
-  // for a large share of visitors.
   flagUrl: string;
 }
 
@@ -230,3 +227,5 @@ export interface Translations {
     defaultPlaceholder: string;
   };
 }
+
+export type RoomKey = keyof Translations['rooms']['items'];

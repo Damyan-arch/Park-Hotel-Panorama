@@ -17,7 +17,12 @@
             <li>{{ amenity }}</li>
           }
         </ul>
-        <a class="btn btn-accent" routerLink="/booking">{{ lang.t().rooms.bookNow }}</a>
+        <a
+          class="btn btn-accent"
+          [routerLink]="routes.booking"
+          [queryParams]="{ room: room.key }"
+          >{{ lang.t().rooms.bookNow }}</a
+        >
       </div>
     </article>
   }
