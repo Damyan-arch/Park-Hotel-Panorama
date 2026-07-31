@@ -1,10 +1,6 @@
-import { Component, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { PageHero } from '../../shared/page-hero/page-hero';
-
-interface GalleryPhoto {
-  src: string;
-  alt: string;
-}
+import { LanguageService } from '../../i18n/language.service';
 
 @Component({
   selector: 'app-gallery',
@@ -13,14 +9,19 @@ interface GalleryPhoto {
   styleUrl: './gallery.scss',
 })
 export class Gallery {
-  protected readonly photos: GalleryPhoto[] = [
-    { src: '/images/gallery/lounge-lobby.webp', alt: 'Hotel lounge with mountain views' },
-    { src: '/images/gallery/restaurant-hall.webp', alt: 'Restaurant dining hall' },
-    { src: '/images/gallery/twin-room.webp', alt: 'Twin room' },
-    { src: '/images/gallery/room-lounge.webp', alt: 'Room sitting area' },
-    { src: '/images/gallery/courtyard-garden.webp', alt: 'Hotel courtyard and garden' },
-    { src: '/images/gallery/rose-garden.webp', alt: 'Rose garden' },
-  ];
+  protected readonly lang = inject(LanguageService);
+
+  protected readonly photos = computed(() => {
+    const alt = this.lang.t().gallery.alt;
+    return [
+      { src: '/images/gallery/lounge-lobby.webp', alt: alt.loungeLobby },
+      { src: '/images/gallery/restaurant-hall.webp', alt: alt.restaurantHall },
+      { src: '/images/gallery/twin-room.webp', alt: alt.twinRoom },
+      { src: '/images/gallery/room-lounge.webp', alt: alt.roomLounge },
+      { src: '/images/gallery/courtyard-garden.webp', alt: alt.courtyardGarden },
+      { src: '/images/gallery/rose-garden.webp', alt: alt.roseGarden },
+    ];
+  });
 
   protected readonly activeIndex = signal<number | null>(null);
 

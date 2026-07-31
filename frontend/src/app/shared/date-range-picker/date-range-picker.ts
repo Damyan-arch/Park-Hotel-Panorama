@@ -1,4 +1,5 @@
-import { Component, computed, input, output, signal } from '@angular/core';
+import { Component, computed, inject, input, output, signal } from '@angular/core';
+import { LanguageService } from '../../i18n/language.service';
 
 interface CalendarDay {
   iso: string;
@@ -11,23 +12,6 @@ interface CalendarDay {
   isRangeMiddle: boolean;
   isSingleSelection: boolean;
 }
-
-const MONTH_NAMES = [
-  'January',
-  'February',
-  'March',
-  'April',
-  'May',
-  'June',
-  'July',
-  'August',
-  'September',
-  'October',
-  'November',
-  'December',
-];
-
-const WEEKDAY_NAMES = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
 function toIso(date: Date): string {
   const year = date.getFullYear();
@@ -49,6 +33,8 @@ function parseIso(iso: string | null | undefined): Date | null {
   styleUrl: './date-range-picker.scss',
 })
 export class DateRangePicker {
+  protected readonly lang = inject(LanguageService);
+
   readonly minIso = input<string | null>(null);
   readonly checkIn = input<string>('');
   readonly checkOut = input<string>('');
@@ -61,10 +47,11 @@ export class DateRangePicker {
 
   protected readonly viewYear = signal(this.initialDate.getFullYear());
   protected readonly viewMonth = signal(this.initialDate.getMonth());
-  protected readonly weekdayNames = WEEKDAY_NAMES;
+
+  protected readonly weekdayNames = computed(() => this.lang.t().datePicker.weekdays);
 
   protected readonly monthLabel = computed(
-    () => `${MONTH_NAMES[this.viewMonth()]} ${this.viewYear()}`,
+    () => `${this.lang.t().datePicker.months[this.viewMonth()]} ${this.viewYear()}`,
   );
 
   protected readonly weeks = computed<CalendarDay[][]>(() => {

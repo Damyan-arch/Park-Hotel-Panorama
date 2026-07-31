@@ -23,13 +23,17 @@
     display: block;
   }
 
+  .photo-fallback-text {
+    display: none;
+  }
+
   &.room-photo--missing {
     display: flex;
     align-items: center;
     justify-content: center;
 
-    &::after {
-      content: 'Photo coming soon';
+    .photo-fallback-text {
+      display: block;
       color: var(--color-text-muted);
       font-size: 0.85rem;
     }

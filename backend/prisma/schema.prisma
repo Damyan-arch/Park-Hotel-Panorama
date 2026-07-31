@@ -95,3 +95,16 @@ model Payment {
   createdAt             DateTime      @default(now())
   updatedAt             DateTime      @updatedAt
 }
+
+// Caches machine-translated site copy so the same English source string is
+// never sent to the translation provider twice for a given target locale.
+model TranslationCache {
+  id             String   @id @default(uuid())
+  locale         String
+  sourceHash     String
+  sourceText     String
+  translatedText String
+  createdAt      DateTime @default(now())
+
+  @@unique([locale, sourceHash])
+}

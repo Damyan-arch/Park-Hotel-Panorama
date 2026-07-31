@@ -1,15 +1,8 @@
-<app-page-hero
-  title="Location"
-  subtitle="Tryavna, Bulgaria — nestled in the Balkan Mountain region."
-/>
+<app-page-hero [title]="lang.t().location.heroTitle" [subtitle]="lang.t().location.heroSubtitle" />
 
 <div class="container location-intro">
-  <h2>Our Location</h2>
-  <p>
-    Our hotel is located in the heart of the Balkan Mountains, within a short walking distance
-    from all major historical sites. Located in the middle of Bulgaria, we're a 2&ndash;3 hour
-    drive from any major city.
-  </p>
+  <h2>{{ lang.t().location.ourLocationHeading }}</h2>
+  <p>{{ lang.t().location.ourLocationText }}</p>
 </div>
 
 <div class="container location-split">
@@ -18,25 +11,25 @@
       src="https://www.google.com/maps?q=Park+Hotel+Panorama,+Tryavna,+Bulgaria&output=embed"
       loading="lazy"
       referrerpolicy="no-referrer-when-downgrade"
-      title="Park Hotel Panorama location"
+      [title]="lang.t().location.mapTitle"
     ></iframe>
   </div>
 
   <div class="directions">
-    <h2>How To Get There</h2>
+    <h2>{{ lang.t().location.howToGetThereHeading }}</h2>
 
     <div class="directions-grid">
       <div class="direction-card">
-        <h4>From the Airport</h4>
-        <p>Fly into Sofia Airport, then rent a car, take a train or bus, or arrange a shuttle.</p>
+        <h4>{{ lang.t().location.directions.airport.heading }}</h4>
+        <p>{{ lang.t().location.directions.airport.text }}</p>
       </div>
       <div class="direction-card">
-        <h4>From the Train Station</h4>
-        <p>From Tryavna Train Station, take a taxi or arrange a shuttle.</p>
+        <h4>{{ lang.t().location.directions.trainStation.heading }}</h4>
+        <p>{{ lang.t().location.directions.trainStation.text }}</p>
       </div>
       <div class="direction-card">
-        <h4>By Car</h4>
-        <p>Follow GPS navigation (Google Maps) towards str. Panorama 8, Tryavna.</p>
+        <h4>{{ lang.t().location.directions.byCar.heading }}</h4>
+        <p>{{ lang.t().location.directions.byCar.text }}</p>
       </div>
     </div>
   </div>

@@ -1,25 +1,22 @@
-<app-page-hero
-  title="Restaurant"
-  subtitle="Local cuisine and wines from the Tryavna region."
-/>
+<app-page-hero [title]="lang.t().restaurant.heroTitle" [subtitle]="lang.t().restaurant.heroSubtitle" />
 
 <section class="split-row">
   <div class="split-image">
-    <img src="/images/restaurant/dining-hall.webp" alt="Restaurant dining hall" />
+    <img src="/images/restaurant/dining-hall.webp" [alt]="lang.t().restaurant.diningHallAlt" />
   </div>
   <div class="split-text">
-    <h2>Working Hours</h2>
-    <p>Mon &ndash; Sun</p>
-    <p>From 7:00 PM to 10:30 PM</p>
+    <h2>{{ lang.t().restaurant.workingHoursHeading }}</h2>
+    <p>{{ lang.t().restaurant.hoursDays }}</p>
+    <p>{{ lang.t().restaurant.hoursTime }}</p>
   </div>
 </section>
 
 <section class="split-row">
   <div class="split-text">
-    <h2>Menu</h2>
-    <p>Full menu coming soon.</p>
+    <h2>{{ lang.t().restaurant.menuHeading }}</h2>
+    <p>{{ lang.t().restaurant.menuComingSoon }}</p>
   </div>
   <div class="split-image">
-    <img src="/images/restaurant/signature-dish.webp" alt="Signature dish" />
+    <img src="/images/restaurant/signature-dish.webp" [alt]="lang.t().restaurant.signatureDishAlt" />
   </div>
 </section>

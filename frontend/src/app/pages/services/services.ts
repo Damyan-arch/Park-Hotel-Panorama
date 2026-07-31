@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { PageHero } from '../../shared/page-hero/page-hero';
+import { LanguageService } from '../../i18n/language.service';
 
 @Component({
   selector: 'app-services',
@@ -7,4 +8,6 @@ import { PageHero } from '../../shared/page-hero/page-hero';
   templateUrl: './services.html',
   styleUrl: './services.scss',
 })
-export class Services {}
+export class Services {
+  protected readonly lang = inject(LanguageService);
+}

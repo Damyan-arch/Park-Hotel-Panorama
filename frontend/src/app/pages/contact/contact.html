@@ -1,5 +1,5 @@
-<app-page-hero title="Contact" subtitle="We'd love to hear from you." />
+<app-page-hero [title]="lang.t().contact.heroTitle" [subtitle]="lang.t().contact.heroSubtitle" />
 
 <div class="page-content">
-  <p>Phone: <a href="tel:+359897820065">+359 897 820 065</a></p>
+  <p>{{ lang.t().contact.phoneLabel }} <a href="tel:+359897820065">+359 897 820 065</a></p>
 </div>

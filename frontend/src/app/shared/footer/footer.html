@@ -2,27 +2,27 @@
   <div class="container footer-grid">
     <div>
       <p class="brand">Park Hotel Panorama</p>
-      <p>The best way to experience Bulgaria &mdash; nestled in the Balkan Mountains, Tryavna.</p>
+      <p>{{ lang.t().footer.tagline }}</p>
     </div>
 
     <div>
-      <p class="col-title">Explore</p>
+      <p class="col-title">{{ lang.t().footer.exploreHeading }}</p>
       <nav>
-        <a routerLink="/rooms">Rooms</a>
-        <a routerLink="/restaurant">Restaurant</a>
-        <a routerLink="/services">Services</a>
-        <a routerLink="/gallery">Gallery</a>
+        <a routerLink="/rooms">{{ lang.t().nav.rooms }}</a>
+        <a routerLink="/restaurant">{{ lang.t().nav.restaurant }}</a>
+        <a routerLink="/services">{{ lang.t().nav.services }}</a>
+        <a routerLink="/gallery">{{ lang.t().nav.gallery }}</a>
       </nav>
     </div>
 
     <div>
-      <p class="col-title">Contact</p>
-      <p>Tryavna, Bulgaria</p>
+      <p class="col-title">{{ lang.t().footer.contactHeading }}</p>
+      <p>{{ lang.t().footer.address }}</p>
       <p>+359 897 820 065</p>
     </div>
   </div>
 
   <div class="container copyright">
-    <p>&copy; {{ currentYear }} Park Hotel Panorama. All rights reserved.</p>
+    <p>&copy; {{ currentYear }} {{ lang.t().footer.rightsReserved }}</p>
   </div>
 </footer>
