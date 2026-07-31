@@ -1,6 +1,8 @@
-import { createHash } from 'crypto';
+import { createHash, randomUUID } from 'crypto';
 import { Injectable, Logger } from '@nestjs/common';
-import { PrismaService } from '../prisma/prisma.service';
+import { InjectRepository } from '@nestjs/typeorm';
+import { In, Repository } from 'typeorm';
+import { TranslationCache } from './translation-cache.entity';
 import { TranslatableLocale } from './dto/translate-batch.dto';
 
 const DEEPL_TARGET_LANG: Record<TranslatableLocale, string> = {
@@ -34,7 +36,9 @@ interface DeepLResponse {
 export class TranslationService {
   private readonly logger = new Logger(TranslationService.name);
 
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    @InjectRepository(TranslationCache) private readonly cache: Repository<TranslationCache>,
+  ) {}
 
   async translate(
     locale: TranslatableLocale,
@@ -44,8 +48,8 @@ export class TranslationService {
     const hashByKey = new Map(keys.map((key) => [key, hashText(entries[key])]));
     const uniqueHashes = [...new Set(hashByKey.values())];
 
-    const cached = await this.prisma.translationCache.findMany({
-      where: { locale, sourceHash: { in: uniqueHashes } },
+    const cached = await this.cache.find({
+      where: { locale, sourceHash: In(uniqueHashes) },
     });
     const translatedByHash = new Map(cached.map((row) => [row.sourceHash, row.translatedText]));
 
@@ -70,15 +74,21 @@ export class TranslationService {
             batch.map((entry) => entry.text),
             locale,
           );
-          await this.prisma.translationCache.createMany({
-            data: batch.map((entry, index) => ({
-              locale,
-              sourceHash: entry.hash,
-              sourceText: entry.text,
-              translatedText: translatedTexts[index],
-            })),
-            skipDuplicates: true,
-          });
+          await this.cache
+            .createQueryBuilder()
+            .insert()
+            .into(TranslationCache)
+            .values(
+              batch.map((entry, index) => ({
+                id: randomUUID(),
+                locale,
+                sourceHash: entry.hash,
+                sourceText: entry.text,
+                translatedText: translatedTexts[index],
+              })),
+            )
+            .orIgnore()
+            .execute();
           batch.forEach((entry, index) => translatedByHash.set(entry.hash, translatedTexts[index]));
         } catch (error) {
           this.logger.warn(

@@ -1,14 +1,16 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from '../prisma/prisma.service';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Room } from './room.entity';
 
 @Injectable()
 export class RoomsService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(@InjectRepository(Room) private readonly rooms: Repository<Room>) {}
 
   findActive() {
-    return this.prisma.room.findMany({
+    return this.rooms.find({
       where: { isActive: true },
-      orderBy: { name: 'asc' },
+      order: { name: 'ASC' },
     });
   }
 }

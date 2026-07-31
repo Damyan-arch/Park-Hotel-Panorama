@@ -4,7 +4,10 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { PrismaService } from '../prisma/prisma.service';
+import { InjectRepository } from '@nestjs/typeorm';
+import { In, LessThan, MoreThan, Repository } from 'typeorm';
+import { Reservation, ReservationStatus } from './reservation.entity';
+import { Room } from '../rooms/room.entity';
 import { GuestsService } from '../guests/guests.service';
 import { CreateReservationDto } from './dto/create-reservation.dto';
 
@@ -20,7 +23,8 @@ function isExclusionViolation(error: unknown): boolean {
 @Injectable()
 export class ReservationsService {
   constructor(
-    private readonly prisma: PrismaService,
+    @InjectRepository(Reservation) private readonly reservations: Repository<Reservation>,
+    @InjectRepository(Room) private readonly rooms: Repository<Room>,
     private readonly guestsService: GuestsService,
   ) {}
 
@@ -38,17 +42,17 @@ export class ReservationsService {
       throw new BadRequestException('Check-in date cannot be in the past.');
     }
 
-    const room = await this.prisma.room.findUnique({ where: { id: dto.roomId } });
+    const room = await this.rooms.findOne({ where: { id: dto.roomId } });
     if (!room || !room.isActive) {
       throw new NotFoundException('Room not found.');
     }
 
-    const overlapping = await this.prisma.reservation.findFirst({
+    const overlapping = await this.reservations.findOne({
       where: {
         roomId: dto.roomId,
-        status: { in: ['PENDING', 'CONFIRMED'] },
-        checkInDate: { lt: checkOut },
-        checkOutDate: { gt: checkIn },
+        status: In([ReservationStatus.PENDING, ReservationStatus.CONFIRMED]),
+        checkInDate: LessThan(dto.checkOut),
+        checkOutDate: MoreThan(dto.checkIn),
       },
     });
     if (overlapping) {
@@ -68,18 +72,21 @@ export class ReservationsService {
     const nights = Math.round((checkOut.getTime() - checkIn.getTime()) / (1000 * 60 * 60 * 24));
     const totalPrice = Number(room.basePricePerNight) * nights;
 
+    const reservation = this.reservations.create({
+      roomId: room.id,
+      guestId: guest.id,
+      checkInDate: dto.checkIn,
+      checkOutDate: dto.checkOut,
+      numberOfGuests: dto.numberOfGuests ?? 1,
+      totalPrice: totalPrice.toFixed(2),
+      currency: room.currency,
+    });
+
     try {
-      return await this.prisma.reservation.create({
-        data: {
-          roomId: room.id,
-          guestId: guest.id,
-          checkInDate: checkIn,
-          checkOutDate: checkOut,
-          numberOfGuests: dto.numberOfGuests ?? 1,
-          totalPrice,
-          currency: room.currency,
-        },
-        include: { room: true, guest: true },
+      const saved = await this.reservations.save(reservation);
+      return this.reservations.findOne({
+        where: { id: saved.id },
+        relations: { room: true, guest: true },
       });
     } catch (error) {
       if (isExclusionViolation(error)) {
