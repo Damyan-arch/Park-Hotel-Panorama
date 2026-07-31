@@ -15,8 +15,11 @@
 }
 
 .lang-flag {
-  font-size: 1.1rem;
-  line-height: 1;
+  width: 1.2rem;
+  height: auto;
+  display: block;
+  border-radius: 2px;
+  box-shadow: 0 0 0 1px rgba(43, 42, 40, 0.15);
 }
 
 .lang-code {
