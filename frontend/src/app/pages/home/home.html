@@ -2,7 +2,7 @@
   <div class="container hero-inner">
     <h1>{{ lang.t().home.heroTitle }}</h1>
     <p>{{ lang.t().home.heroSubtitle }}</p>
-    <a class="btn btn-accent" routerLink="/booking">{{ lang.t().home.bookNow }}</a>
+    <a class="btn btn-accent" [routerLink]="routes.booking">{{ lang.t().home.bookNow }}</a>
   </div>
 </section>
 

@@ -10,6 +10,10 @@ async function bootstrap() {
     origin: process.env.FRONTEND_ORIGIN ?? 'http://localhost:4201',
   });
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
+  // Lets the Angular dev server proxy everything under /api to this backend
+  // (see frontend/proxy.conf.json), so both apps are reachable through a
+  // single origin/tunnel URL instead of two separate ports.
+  app.setGlobalPrefix('api');
 
   const config = new DocumentBuilder()
     .setTitle('Park Hotel Panorama API')
@@ -19,7 +23,7 @@ async function bootstrap() {
     .setVersion('0.1')
     .build();
   const documentFactory = () => SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, documentFactory);
+  SwaggerModule.setup('docs', app, documentFactory);
 
   await app.listen(process.env.PORT ?? 3001);
 }

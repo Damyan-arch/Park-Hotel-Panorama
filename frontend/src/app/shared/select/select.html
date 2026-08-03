@@ -1,6 +1,6 @@
-<div class="custom-select" [class.is-open]="isOpen()">
+<div class="custom-select" [class.is-open]="isOpen()" [class.has-error]="hasError()">
   <button type="button" class="select-trigger" (click)="toggle()">
-    <span [class.is-placeholder]="!value()">{{ value() || placeholder() }}</span>
+    <span [class.is-placeholder]="isPlaceholder()">{{ displayValue() }}</span>
     <span class="chevron">&rsaquo;</span>
   </button>
 
@@ -10,7 +10,7 @@
         <li
           role="option"
           class="select-option"
-          [class.is-selected]="option === value()"
+          [class.is-selected]="isSelected(option)"
           (click)="selectOption(option)"
         >
           {{ option }}

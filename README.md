@@ -7,12 +7,13 @@ phone-only reservation process with online booking and payment.
 
 - **Frontend:** Angular (standalone components, SCSS) — `frontend/`
 - **Backend:** NestJS — `backend/`
-- **Database:** PostgreSQL, accessed via Prisma — `backend/prisma/schema.prisma`
+- **Database:** PostgreSQL, accessed via TypeORM — entities live next to each feature module
+  (e.g. `backend/src/rooms/room.entity.ts`), migrations in `backend/src/database/migrations/`
 - **Payments:** Stripe
 
 **Why this stack:** Angular + NestJS share TypeScript end-to-end, which suits a booking flow
 with non-trivial client-side state (multi-step forms, live availability) and a backend that
-must guarantee correctness for reservations and payments. PostgreSQL + Prisma give relational,
+must guarantee correctness for reservations and payments. PostgreSQL + TypeORM give relational,
 transactional guarantees — the schema includes a Postgres GiST exclusion constraint that makes
 double-booking a room impossible at the database level, not just checked in application code.
 
@@ -20,10 +21,10 @@ This website is **guest-facing only** — no admin dashboard is included. Hotel 
 use a separate app; the backend's `reservations` module is kept as a clean, documented API
 (Swagger at `/api` once the server is running) so that app can be connected later.
 
-Note: Prisma 7's generated client requires an explicit driver adapter to connect (it no longer
-reads `DATABASE_URL` implicitly at runtime) — `PrismaService` (`backend/src/prisma/prisma.service.ts`)
-constructs a `@prisma/adapter-pg` adapter from `process.env.DATABASE_URL`. This differs from
-older Prisma tutorials/docs and is easy to miss if you're used to earlier Prisma versions.
+Note: `@CreateDateColumn`/`@UpdateDateColumn` rely on a real Postgres column default to fill in
+a value on insert — a plain `DEFAULT CURRENT_TIMESTAMP` migration (`AddUpdatedAtDefaults`) had to
+be added for `updatedAt` columns specifically, since the original schema only had one for
+`createdAt`. Easy to miss if you're adding a new entity with these decorators.
 
 ## Prerequisites
 
@@ -41,16 +42,11 @@ older Prisma tutorials/docs and is easy to miss if you're used to earlier Prisma
 ## Setup
 
 ```bash
-npm install                            # installs both workspaces (frontend + backend)
-cd backend && npx prisma migrate deploy   # applies the already-written migrations
+npm install                       # installs both workspaces (frontend + backend)
+cd backend && npm run migration:run  # applies any pending TypeORM migrations
 cd ..
-npm run dev                            # runs Angular (http://localhost:4201) and Nest (http://localhost:3001) together
+npm run dev                       # runs Angular (http://localhost:4201) and Nest (http://localhost:3001) together
 ```
-
-Note: use `npx prisma migrate deploy`, not `migrate dev` — the `park_hotel` role isn't a
-superuser and can't create Postgres's temporary "shadow database" that `migrate dev` needs for
-diffing. `deploy` just applies the existing migration files directly, which is all that's needed
-here since the schema isn't changing.
 
 The frontend dev server defaults to port **4201** (set in `frontend/angular.json`'s `serve.options.port`),
 not Angular's usual 4200, to avoid clashing with other projects that may already be using 4200 on
@@ -62,16 +58,20 @@ Other useful commands:
 
 - `npm run dev:frontend` / `npm run dev:backend` — run just one side
 - `npm run db:up` / `npm run db:down` — only relevant if you switch to the Docker Postgres path
-- `npx prisma studio` (from `backend/`) — browse the local database in a web GUI
+- `npm run db:seed` (from `backend/`) — seeds starter rooms if the table is empty
+- `npm run migration:generate -- src/database/migrations/<Name>` (from `backend/`) — generate a
+  new migration from entity changes; `npm run migration:run` / `migration:revert` apply/undo
 - Swagger API docs: `http://localhost:3001/api` once the backend is running
 
 ## Project layout
 
 ```
 frontend/   Angular app — pages: home, rooms, booking, restaurant, gallery, services, location, contact
-backend/    NestJS app — modules: rooms, guests, reservations, payments (+ shared prisma module)
-  prisma/schema.prisma   data model (Room, Guest, Reservation, Payment)
-  prisma/migrations/     versioned SQL migrations
+backend/    NestJS app — modules: rooms, guests, reservations, payments, translation
+  src/rooms/room.entity.ts, src/guests/guest.entity.ts, etc.   TypeORM entities, one per module
+  src/database/data-source.ts     TypeORM CLI config (migrations, seed script)
+  src/database/migrations/        versioned SQL migrations
+  src/database/seed.ts            starter room data
 docker-compose.yml        local Postgres (+ optional pgAdmin: `docker compose --profile tools up -d`)
 ```
 

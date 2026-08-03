@@ -4,15 +4,15 @@ export interface LocaleOption {
   code: Locale;
   label: string;
   nativeLabel: string;
-  flag: string;
+  flagUrl: string;
 }
 
 export const LOCALE_OPTIONS: LocaleOption[] = [
-  { code: 'en', label: 'English', nativeLabel: 'English', flag: '🇬🇧' },
-  { code: 'bg', label: 'Bulgarian', nativeLabel: 'Български', flag: '🇧🇬' },
-  { code: 'de', label: 'German', nativeLabel: 'Deutsch', flag: '🇩🇪' },
-  { code: 'es', label: 'Spanish', nativeLabel: 'Español', flag: '🇪🇸' },
-  { code: 'ro', label: 'Romanian', nativeLabel: 'Română', flag: '🇷🇴' },
+  { code: 'en', label: 'English', nativeLabel: 'English', flagUrl: '/images/flags/gb.svg' },
+  { code: 'bg', label: 'Bulgarian', nativeLabel: 'Български', flagUrl: '/images/flags/bg.svg' },
+  { code: 'de', label: 'German', nativeLabel: 'Deutsch', flagUrl: '/images/flags/de.svg' },
+  { code: 'es', label: 'Spanish', nativeLabel: 'Español', flagUrl: '/images/flags/es.svg' },
+  { code: 'ro', label: 'Romanian', nativeLabel: 'Română', flagUrl: '/images/flags/ro.svg' },
 ];
 
 export const DEFAULT_LOCALE: Locale = 'en';
@@ -227,3 +227,5 @@ export interface Translations {
     defaultPlaceholder: string;
   };
 }
+
+export type RoomKey = keyof Translations['rooms']['items'];

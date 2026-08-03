@@ -2,6 +2,8 @@ import { Component, computed, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { PageHero } from '../../shared/page-hero/page-hero';
 import { LanguageService } from '../../i18n/language.service';
+import { RoomKey } from '../../i18n/translations.model';
+import { ROUTE_PATHS } from '../../route-paths';
 
 @Component({
   selector: 'app-rooms',
@@ -11,6 +13,7 @@ import { LanguageService } from '../../i18n/language.service';
 })
 export class Rooms {
   protected readonly lang = inject(LanguageService);
+  protected readonly routes = ROUTE_PATHS;
 
   protected readonly rooms = computed(() => {
     const t = this.lang.t().rooms;
@@ -18,6 +21,7 @@ export class Rooms {
 
     return [
       {
+        key: 'doubleRoom' as RoomKey,
         name: t.items.doubleRoom.name,
         sizeSqm: 30,
         maxGuests: 2,
@@ -25,6 +29,7 @@ export class Rooms {
         image: '/images/rooms/double-room-balcony.webp',
       },
       {
+        key: 'apartment' as RoomKey,
         name: t.items.apartment.name,
         sizeSqm: 42,
         maxGuests: 4,
@@ -32,6 +37,7 @@ export class Rooms {
         image: '/images/rooms/apartment-balcony.webp',
       },
       {
+        key: 'tripleRoom' as RoomKey,
         name: t.items.tripleRoom.name,
         sizeSqm: 30,
         maxGuests: 3,
@@ -39,6 +45,7 @@ export class Rooms {
         image: '/images/rooms/triple-room-balcony.webp',
       },
       {
+        key: 'townSuite' as RoomKey,
         name: t.items.townSuite.name,
         sizeSqm: 49,
         maxGuests: 4,

@@ -8,10 +8,10 @@
     <div>
       <p class="col-title">{{ lang.t().footer.exploreHeading }}</p>
       <nav>
-        <a routerLink="/rooms">{{ lang.t().nav.rooms }}</a>
-        <a routerLink="/restaurant">{{ lang.t().nav.restaurant }}</a>
-        <a routerLink="/services">{{ lang.t().nav.services }}</a>
-        <a routerLink="/gallery">{{ lang.t().nav.gallery }}</a>
+        <a [routerLink]="routes.rooms">{{ lang.t().nav.rooms }}</a>
+        <a [routerLink]="routes.restaurant">{{ lang.t().nav.restaurant }}</a>
+        <a [routerLink]="routes.services">{{ lang.t().nav.services }}</a>
+        <a [routerLink]="routes.gallery">{{ lang.t().nav.gallery }}</a>
       </nav>
     </div>
 

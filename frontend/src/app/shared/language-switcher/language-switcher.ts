@@ -12,14 +12,18 @@ export class LanguageSwitcher {
   protected readonly lang = inject(LanguageService);
   protected readonly isOpen = signal(false);
 
-  protected readonly currentFlag = computed(
-    () => this.lang.options.find((option) => option.code === this.lang.locale())?.flag ?? '',
+  protected readonly currentFlagUrl = computed(
+    () => this.lang.options.find((option) => option.code === this.lang.locale())?.flagUrl ?? '',
   );
 
   private readonly elementRef = inject(ElementRef<HTMLElement>);
 
   protected toggle(): void {
     this.isOpen.update((open) => !open);
+  }
+
+  protected isSelected(locale: Locale): boolean {
+    return locale === this.lang.locale();
   }
 
   protected select(locale: Locale): void {

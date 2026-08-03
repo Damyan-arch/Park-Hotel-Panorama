@@ -26,6 +26,11 @@
   outline-offset: 1px;
 }
 
+.custom-select.has-error .select-trigger {
+  border-color: #e3a89c;
+  background: #fbeae7;
+}
+
 .chevron {
   display: inline-block;
   margin-left: 0.5rem;

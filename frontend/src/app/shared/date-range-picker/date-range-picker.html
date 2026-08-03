@@ -1,12 +1,12 @@
 <div class="date-range-picker">
-  <div class="range-labels">
+  <div class="range-labels" [class.has-error]="hasError()">
     <div class="range-label">
       <span>{{ lang.t().datePicker.checkIn }}</span>
-      <strong>{{ checkIn() || lang.t().datePicker.selectDate }}</strong>
+      <strong>{{ checkInLabel() }}</strong>
     </div>
     <div class="range-label">
       <span>{{ lang.t().datePicker.checkOut }}</span>
-      <strong>{{ checkOut() || lang.t().datePicker.selectDate }}</strong>
+      <strong>{{ checkOutLabel() }}</strong>
     </div>
   </div>
 
@@ -43,7 +43,7 @@
           <button
             type="button"
             class="day-cell"
-            [class.is-outside]="!day.inCurrentMonth"
+            [class.is-outside]="day.isOutside"
             [class.is-past]="day.isPast"
             [class.is-today]="day.isToday"
             [class.is-range-start]="day.isRangeStart"

@@ -1,5 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from '../prisma/prisma.service';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Guest } from './guest.entity';
 
 interface GuestDetails {
   firstName: string;
@@ -10,22 +12,25 @@ interface GuestDetails {
 
 @Injectable()
 export class GuestsService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(@InjectRepository(Guest) private readonly guests: Repository<Guest>) {}
 
-  async findOrCreate(details: GuestDetails) {
-    const existing = await this.prisma.guest.findUnique({ where: { email: details.email } });
+  async findOrCreate(details: GuestDetails): Promise<Guest> {
+    const existing = await this.guests.findOne({ where: { email: details.email } });
 
     if (existing) {
-      return this.prisma.guest.update({
-        where: { id: existing.id },
-        data: {
-          firstName: details.firstName,
-          lastName: details.lastName,
-          phone: details.phone,
-        },
-      });
+      existing.firstName = details.firstName;
+      existing.lastName = details.lastName;
+      existing.phone = details.phone ?? null;
+      return this.guests.save(existing);
     }
 
-    return this.prisma.guest.create({ data: details });
+    return this.guests.save(
+      this.guests.create({
+        firstName: details.firstName,
+        lastName: details.lastName,
+        email: details.email,
+        phone: details.phone ?? null,
+      }),
+    );
   }
 }

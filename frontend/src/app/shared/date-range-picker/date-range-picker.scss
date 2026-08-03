@@ -34,6 +34,11 @@
   }
 }
 
+.range-labels.has-error .range-label {
+  border-color: #e3a89c;
+  background: #fbeae7;
+}
+
 .date-picker-panel {
   background: var(--color-surface);
   border: 1px solid var(--color-border);
