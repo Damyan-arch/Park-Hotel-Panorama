@@ -3,6 +3,9 @@ node_modules
 /coverage
 *.log
 
+# Admin-uploaded photos (local disk storage, not committed)
+/uploads
+
 # Keep environment variables out of version control
 .env
 .env.test

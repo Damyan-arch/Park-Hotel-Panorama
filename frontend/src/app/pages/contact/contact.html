@@ -1,5 +1,7 @@
 <app-page-hero [title]="lang.t().contact.heroTitle" [subtitle]="lang.t().contact.heroSubtitle" />
 
 <div class="page-content">
-  <p>{{ lang.t().contact.phoneLabel }} <a href="tel:+359897820065">+359 897 820 065</a></p>
+  @if (siteSettings.settings(); as settings) {
+    <p>{{ lang.t().contact.phoneLabel }} <a [href]="settings.phoneHref">{{ settings.phoneNumber }}</a></p>
+  }
 </div>

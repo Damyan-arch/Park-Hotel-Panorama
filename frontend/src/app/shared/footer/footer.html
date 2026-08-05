@@ -17,8 +17,10 @@
 
     <div>
       <p class="col-title">{{ lang.t().footer.contactHeading }}</p>
-      <p>{{ lang.t().footer.address }}</p>
-      <p>+359 897 820 065</p>
+      @if (siteSettings.settings(); as settings) {
+        <p>{{ settings.address }}</p>
+        <p><a [href]="settings.phoneHref">{{ settings.phoneNumber }}</a></p>
+      }
     </div>
   </div>
 

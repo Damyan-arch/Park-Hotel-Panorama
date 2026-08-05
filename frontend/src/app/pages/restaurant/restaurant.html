@@ -6,8 +6,10 @@
   </div>
   <div class="split-text">
     <h2>{{ lang.t().restaurant.workingHoursHeading }}</h2>
-    <p>{{ lang.t().restaurant.hoursDays }}</p>
-    <p>{{ lang.t().restaurant.hoursTime }}</p>
+    @if (siteSettings.settings(); as settings) {
+      <p>{{ settings.restaurantHoursDays }}</p>
+      <p>{{ settings.restaurantHoursText }}</p>
+    }
   </div>
 </section>
 
