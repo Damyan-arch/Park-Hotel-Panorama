@@ -16,7 +16,6 @@ export const en: Translations = {
     tagline: 'The best way to experience Bulgaria — nestled in the Balkan Mountains, Tryavna.',
     exploreHeading: 'Explore',
     contactHeading: 'Contact',
-    address: 'Tryavna, Bulgaria',
     rightsReserved: 'Park Hotel Panorama. All rights reserved.',
   },
 
@@ -86,12 +85,6 @@ export const en: Translations = {
       ac: 'AC',
       mountainView: 'Mountain View',
     },
-    items: {
-      doubleRoom: { name: 'Double Room with Balcony' },
-      apartment: { name: 'Apartment with Balcony' },
-      tripleRoom: { name: 'Triple Room with Balcony' },
-      townSuite: { name: 'Town Suite' },
-    },
   },
 
   restaurant: {
@@ -99,8 +92,6 @@ export const en: Translations = {
     heroSubtitle: 'Local cuisine and wines from the Tryavna region.',
     diningHallAlt: 'Restaurant dining hall',
     workingHoursHeading: 'Working Hours',
-    hoursDays: 'Mon – Sun',
-    hoursTime: 'From 7:00 PM to 10:30 PM',
     menuHeading: 'Menu',
     menuComingSoon: 'Full menu coming soon.',
     signatureDishAlt: 'Signature dish',

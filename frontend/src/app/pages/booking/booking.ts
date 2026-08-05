@@ -7,16 +7,11 @@ import { DateRangePicker } from '../../shared/date-range-picker/date-range-picke
 import { Select } from '../../shared/select/select';
 import { environment } from '../../../environments/environment';
 import { LanguageService } from '../../i18n/language.service';
-import { RoomKey } from '../../i18n/translations.model';
-import { en } from '../../i18n/locales/en';
+import { SiteSettingsService } from '../../core/site-settings.service';
 
 interface Room {
   id: string;
   name: string;
-}
-
-function isRoomKey(value: string): value is RoomKey {
-  return value in en.rooms.items;
 }
 
 function toLocalIso(date: Date): string {
@@ -34,6 +29,7 @@ function toLocalIso(date: Date): string {
 })
 export class Booking {
   protected readonly lang = inject(LanguageService);
+  protected readonly siteSettings = inject(SiteSettingsService);
 
   private readonly http = inject(HttpClient);
   private readonly route = inject(ActivatedRoute);
@@ -58,17 +54,14 @@ export class Booking {
   });
 
   constructor() {
-    const roomKeyParam = this.route.snapshot.queryParamMap.get('room');
+    const roomIdParam = this.route.snapshot.queryParamMap.get('roomId');
 
     this.http.get<Room[]>(`${environment.apiUrl}/rooms`).subscribe({
       next: (rooms) => {
         this.availableRooms.set(rooms);
-        if (roomKeyParam && isRoomKey(roomKeyParam)) {
-          const englishName = en.rooms.items[roomKeyParam].name;
-          const match = rooms.find((room) => room.name === englishName);
-          if (match) {
-            this.onRoomSelected(match.name);
-          }
+        const match = rooms.find((room) => room.id === roomIdParam);
+        if (match) {
+          this.onRoomSelected(match.name);
         }
       },
       error: () => this.availableRooms.set([]),

@@ -1,5 +1,8 @@
+@if (showAdminToolbar()) {
+  <app-admin-toolbar />
+}
 <app-header />
-<main>
+<main [class.admin-content]="isAdminArea()">
   <router-outlet />
 </main>
 <app-footer />

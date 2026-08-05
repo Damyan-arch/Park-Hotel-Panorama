@@ -17,10 +17,6 @@ export const LOCALE_OPTIONS: LocaleOption[] = [
 
 export const DEFAULT_LOCALE: Locale = 'en';
 
-interface RoomCopy {
-  name: string;
-}
-
 interface AmenityCopy {
   tv: string;
   wifi: string;
@@ -68,7 +64,6 @@ export interface Translations {
     tagline: string;
     exploreHeading: string;
     contactHeading: string;
-    address: string;
     rightsReserved: string;
   };
 
@@ -102,12 +97,6 @@ export interface Translations {
     bookNow: string;
     photoComingSoon: string;
     amenities: AmenityCopy;
-    items: {
-      doubleRoom: RoomCopy;
-      apartment: RoomCopy;
-      tripleRoom: RoomCopy;
-      townSuite: RoomCopy;
-    };
   };
 
   restaurant: {
@@ -115,8 +104,6 @@ export interface Translations {
     heroSubtitle: string;
     diningHallAlt: string;
     workingHoursHeading: string;
-    hoursDays: string;
-    hoursTime: string;
     menuHeading: string;
     menuComingSoon: string;
     signatureDishAlt: string;
@@ -227,5 +214,3 @@ export interface Translations {
     defaultPlaceholder: string;
   };
 }
-
-export type RoomKey = keyof Translations['rooms']['items'];

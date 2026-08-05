@@ -1,0 +1,46 @@
+<section class="admin-gallery">
+  <div class="section-header">
+    <h1>Gallery</h1>
+    <label class="upload-btn">
+      + Add photo
+      <input type="file" accept="image/*" (change)="onFileSelected($event)" [disabled]="uploading()" />
+    </label>
+  </div>
+
+  @if (errorMessage() && !pendingPreviewUrl()) {
+    <p class="error">{{ errorMessage() }}</p>
+  }
+
+  <div class="photo-grid">
+    @for (photo of photos(); track photo.id) {
+      <div class="photo-card">
+        <img [src]="photo.imageUrl" alt="" />
+        <input
+          type="text"
+          [value]="photo.altTextEn ?? ''"
+          placeholder="Caption"
+          (change)="onAltChange(photo, $event)"
+        />
+        <button type="button" class="danger" (click)="remove(photo)">Delete</button>
+      </div>
+    }
+  </div>
+</section>
+
+@if (pendingPreviewUrl(); as previewUrl) {
+  <div class="modal-overlay" (click)="cancelAdd()">
+    <div class="modal-card" (click)="$event.stopPropagation()">
+      <h2>Add this photo?</h2>
+      <img [src]="previewUrl" alt="" class="modal-preview" />
+      @if (errorMessage()) {
+        <p class="error">{{ errorMessage() }}</p>
+      }
+      <div class="modal-actions">
+        <button type="button" (click)="cancelAdd()" [disabled]="uploading()">Cancel</button>
+        <button type="button" class="btn-primary" (click)="confirmAdd()" [disabled]="uploading()">
+          {{ uploading() ? 'Adding…' : 'Add photo' }}
+        </button>
+      </div>
+    </div>
+  </div>
+}

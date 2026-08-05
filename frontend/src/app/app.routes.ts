@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { adminGuard } from './admin/auth/admin.guard';
 
 export const routes: Routes = [
   { path: '', loadComponent: () => import('./pages/home/home').then((m) => m.Home) },
@@ -26,6 +27,29 @@ export const routes: Routes = [
   {
     path: 'contact',
     loadComponent: () => import('./pages/contact/contact').then((m) => m.Contact),
+  },
+  {
+    path: 'admin/login',
+    loadComponent: () => import('./admin/login/admin-login').then((m) => m.AdminLogin),
+  },
+  {
+    path: 'admin',
+    canActivate: [adminGuard],
+    children: [
+      { path: '', redirectTo: 'rooms', pathMatch: 'full' },
+      {
+        path: 'rooms',
+        loadComponent: () => import('./admin/rooms/admin-rooms').then((m) => m.AdminRooms),
+      },
+      {
+        path: 'gallery',
+        loadComponent: () => import('./admin/gallery/admin-gallery').then((m) => m.AdminGallery),
+      },
+      {
+        path: 'settings',
+        loadComponent: () => import('./admin/settings/admin-settings').then((m) => m.AdminSettings),
+      },
+    ],
   },
   { path: '**', redirectTo: '' },
 ];

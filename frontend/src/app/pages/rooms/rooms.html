@@ -1,17 +1,25 @@
 <app-page-hero [title]="lang.t().rooms.heroTitle" [subtitle]="lang.t().rooms.heroSubtitle" />
 
 <div class="container rooms-grid">
-  @for (room of rooms(); track room.name) {
+  @for (room of rooms(); track room.id) {
     <article class="room-card">
-      <div class="room-photo">
-        <img [src]="room.image" [alt]="room.name" loading="lazy" (error)="onImageError($event)" />
+      <div class="room-photo" [class.room-photo--missing]="!room.image">
+        @if (room.image) {
+          <img [src]="room.image" [alt]="room.name" loading="lazy" (error)="onImageError($event)" />
+        }
         <span class="photo-fallback-text">{{ lang.t().rooms.photoComingSoon }}</span>
       </div>
       <div class="room-body">
         <h3>{{ room.name }}</h3>
         <p class="room-meta">
-          {{ room.sizeSqm }} m&sup2; &middot; {{ lang.t().rooms.maxLabel }} {{ room.maxGuests }}
+          @if (room.sizeSqm) {
+            {{ room.sizeSqm }} m&sup2; &middot;
+          }
+          {{ lang.t().rooms.maxLabel }} {{ room.maxGuests }}
         </p>
+        @if (room.description) {
+          <p class="room-description">{{ room.description }}</p>
+        }
         <ul class="amenities">
           @for (amenity of room.amenities; track amenity) {
             <li>{{ amenity }}</li>
@@ -20,7 +28,7 @@
         <a
           class="btn btn-accent"
           [routerLink]="routes.booking"
-          [queryParams]="{ room: room.key }"
+          [queryParams]="{ roomId: room.id }"
           >{{ lang.t().rooms.bookNow }}</a
         >
       </div>

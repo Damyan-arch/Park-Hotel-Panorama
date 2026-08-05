@@ -6,7 +6,9 @@
       <h2>{{ lang.t().booking.thankYouHeading }}</h2>
       <p>
         {{ lang.t().booking.thankYouText }}
-        <a href="tel:+359897820065">+359 897 820 065</a>.
+        @if (siteSettings.settings(); as settings) {
+          <a [href]="settings.phoneHref">{{ settings.phoneNumber }}</a>.
+        }
       </p>
     </div>
   } @else {

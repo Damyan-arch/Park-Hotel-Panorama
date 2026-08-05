@@ -34,6 +34,9 @@ export class Room {
   @Column()
   capacity: number;
 
+  @Column('integer', { nullable: true })
+  sizeSqm: number | null;
+
   @Column('decimal', { precision: 10, scale: 2 })
   basePricePerNight: string;
 

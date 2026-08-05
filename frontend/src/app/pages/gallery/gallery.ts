@@ -1,6 +1,15 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, effect, inject, signal } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { PageHero } from '../../shared/page-hero/page-hero';
 import { LanguageService } from '../../i18n/language.service';
+import { DbContentTranslationService } from '../../i18n/db-content-translation.service';
+import { environment } from '../../../environments/environment';
+
+interface ApiGalleryPhoto {
+  id: string;
+  imageUrl: string;
+  altTextEn: string | null;
+}
 
 @Component({
   selector: 'app-gallery',
@@ -11,16 +20,18 @@ import { LanguageService } from '../../i18n/language.service';
 export class Gallery {
   protected readonly lang = inject(LanguageService);
 
+  private readonly http = inject(HttpClient);
+  private readonly dbTranslation = inject(DbContentTranslationService);
+
+  private readonly apiPhotos = signal<ApiGalleryPhoto[]>([]);
+  private readonly translatedAlt = signal<Record<string, string>>({});
+
   protected readonly photos = computed(() => {
-    const alt = this.lang.t().gallery.alt;
-    return [
-      { src: '/images/gallery/lounge-lobby.webp', alt: alt.loungeLobby },
-      { src: '/images/gallery/restaurant-hall.webp', alt: alt.restaurantHall },
-      { src: '/images/gallery/twin-room.webp', alt: alt.twinRoom },
-      { src: '/images/gallery/room-lounge.webp', alt: alt.roomLounge },
-      { src: '/images/gallery/courtyard-garden.webp', alt: alt.courtyardGarden },
-      { src: '/images/gallery/rose-garden.webp', alt: alt.roseGarden },
-    ];
+    const translated = this.translatedAlt();
+    return this.apiPhotos().map((photo) => ({
+      src: photo.imageUrl,
+      alt: photo.altTextEn ? translated[photo.id] ?? photo.altTextEn : '',
+    }));
   });
 
   protected readonly activeIndex = signal<number | null>(null);
@@ -29,6 +40,26 @@ export class Gallery {
     const index = this.activeIndex();
     return index === null ? null : this.photos()[index];
   });
+
+  constructor() {
+    this.http.get<ApiGalleryPhoto[]>(`${environment.apiUrl}/gallery`).subscribe((photos) => {
+      this.apiPhotos.set(photos);
+    });
+
+    effect(() => {
+      const photos = this.apiPhotos();
+      const locale = this.lang.locale();
+      if (photos.length === 0) return;
+
+      const entries: Record<string, string> = {};
+      for (const photo of photos) {
+        if (photo.altTextEn) entries[photo.id] = photo.altTextEn;
+      }
+      this.dbTranslation.translate('gallery', locale, entries).then((translated) => {
+        this.translatedAlt.set(translated);
+      });
+    });
+  }
 
   open(index: number): void {
     this.activeIndex.set(index);

@@ -1,0 +1,106 @@
+<section class="admin-rooms">
+  <div class="section-header">
+    <h1>Rooms</h1>
+    <button type="button" class="btn-primary" (click)="startCreate()">+ Add room</button>
+  </div>
+
+  @if (errorMessage()) {
+    <p class="error">{{ errorMessage() }}</p>
+  }
+
+  <table class="admin-table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Price / night</th>
+        <th>Capacity</th>
+        <th>Size</th>
+        <th>Active</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (room of rooms(); track room.id) {
+        <tr>
+          <td>{{ room.name }}</td>
+          <td>{{ room.basePricePerNight }} {{ room.currency }}</td>
+          <td>{{ room.capacity }}</td>
+          <td>{{ room.sizeSqm ?? '—' }} m&sup2;</td>
+          <td>{{ room.isActive ? 'Yes' : 'No' }}</td>
+          <td class="row-actions">
+            <button type="button" (click)="startEdit(room)">Edit</button>
+            <button type="button" class="danger" (click)="remove(room)">Delete</button>
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+
+  @if (isEditorOpen()) {
+    <form class="admin-editor" [formGroup]="form" (ngSubmit)="save()">
+      <h2>{{ editingId() ? 'Edit room' : 'New room' }}</h2>
+
+      <label>
+        Name
+        <input type="text" formControlName="name" />
+      </label>
+
+      <label>
+        Type
+        <select formControlName="type">
+          @for (type of roomTypes; track type) {
+            <option [value]="type">{{ type }}</option>
+          }
+        </select>
+      </label>
+
+      <label>
+        Description
+        <textarea formControlName="description" rows="3"></textarea>
+      </label>
+
+      <div class="field-row">
+        <label>
+          Capacity
+          <input type="number" formControlName="capacity" min="1" />
+        </label>
+
+        <label>
+          Size (m&sup2;)
+          <input type="number" formControlName="sizeSqm" min="1" />
+        </label>
+
+        <label>
+          Price / night
+          <input type="text" formControlName="basePricePerNight" />
+        </label>
+      </div>
+
+      <label class="checkbox-field">
+        <input type="checkbox" formControlName="isActive" />
+        Visible on the public site
+      </label>
+
+      <div class="image-manager">
+        <p>Photos</p>
+        <div class="image-list">
+          @for (url of imageUrls(); track url) {
+            <div class="image-thumb">
+              <img [src]="url" alt="" />
+              <button type="button" (click)="removeImage(url)">Remove</button>
+            </div>
+          }
+        </div>
+        <input type="file" accept="image/*" (change)="onFileSelected($event)" [disabled]="uploading()" />
+        @if (uploading()) {
+          <span>Uploading…</span>
+        }
+      </div>
+
+      <div class="editor-actions">
+        <button type="button" (click)="cancelEdit()">Cancel</button>
+        <button type="submit" class="btn-primary">Save</button>
+      </div>
+    </form>
+  }
+</section>
